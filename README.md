@@ -137,7 +137,7 @@ namespace dfly::audio {
 ```cpp
 /* header and source combination for example simplicity */
 
-struct c_example {
+struct example {
 	usize index;
 
 	u8 test() {
@@ -151,7 +151,7 @@ struct c_example {
 ```cpp
 /* foo.hpp */
 
-struct c_foo {
+struct foo {
 	u32 id;
 
 	Foo() = default;
@@ -171,7 +171,7 @@ inline u32 calculate_impl(u32 _id)
 	return external::calc(_id);
 }
 
-u32 c_foo::calculate()
+u32 foo::calculate()
 {
 	return calculate_impl(this->id);
 }
