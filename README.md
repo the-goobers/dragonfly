@@ -2,7 +2,7 @@
 ## a collaborative C++ game engine
 
 ## requirements for contribution/code style
-### C++17
+### C++20
 
 ### commit messages
 - they can be silly
@@ -26,7 +26,13 @@
 ### files
 - `.cpp` for C++ source files/implementations
 - `.hpp` for C++ headers
- 
+
+### folder structure
+- `root/include/` for header files
+- `root/src/` for implementation files
+- `root/libs/` for external libraries
+- `root/build/` for all buildsystem related things
+  
 ### header guards
 ```cpp
 /* dragonfly/file.hpp */
@@ -76,11 +82,12 @@ s32 foo(u8 byte) {
 ### comments/documentation
 - use /* ... */ for all non-temporary comments
 - please document all exposed functions and tid-bits inside headers with an overview of the interface (no need for describing implementation behavior as long as it's not observable to the user)
+- make sure the user knows about any side-effect the function might produce 
 
 #### example:
 ```cpp
 /* returns a hash of the str using algorithm X */
-u64 hash(std::string& str);
+u64 hash(std::string_view str);
 ```
 
 ### classes
@@ -89,30 +96,39 @@ u64 hash(std::string& str);
 - kept in appropriate namepsace
 ```cpp
 namespace dfly::audio {
-	class sound {
+	struct sound {
 		...
 	};
 }
 ```
 
-#### member names
+#### general code-style 
+- general use of snake_case
 - no prefix like `_` or `m_`, just regular names
+- structs that are not primitive datatypes must be marked with a leading ``c_``
 - access variables using `this->...` always
 - call member functions/methods using `method(...)`
+- inline member functions inside headers must not rely on any external functions
+- inline member functions inside headers must not use any types from lower in the composition hierarchy
+- use ``struct`` always
+- all members of a struct should be public
+- implementation functions that are not to be used by other parts of the code must be defined in the
+  	implementation of that header file
+- arguments of any functor (functions, lambdas, callables, func-decls, ...) must have a leading underscore
+- do not write getters and setters if they dont handle any external logic
+- avoid RAII -> constructors and destructor have to always be pure functions (!)
+- outside of the functions that interface with external code pure functions are preferable
+- make use of RVO and nRVO when possible
+- dont use const-references of types smaller than gp-registers 
 ```cpp
 /* header and source combination for example simplicity */
 
-class example {
-public:
+struct c_example {
 	usize index;
 
-	void setIndex(usize index) {
-		this->index = index;
-	}
-	
 	u8 test() {
-		setIndex(8);
-		return 8;
+		index = 8;
+		return index;
 	}
 };
 ```
@@ -121,22 +137,28 @@ public:
 ```cpp
 /* foo.hpp */
 
-class Foo {
-public:
-	Foo();
-	...
-	void setId(u32 id);
-
-private:
+struct c_foo {
 	u32 id;
+
+	Foo() = default;
+	...
+	u32 calculate() const;
+
 };
 ```
 
 #### implementation
 ```cpp
 /* foo.cpp */
+#include <external_dependency.hpp>
 
-void Foo::setId(u32 id) {
-	this->id = id;
+inline u32 calculate_impl(u32 _id)
+{
+	return external::calc(_id);
+}
+
+u32 c_foo::calculate()
+{
+	return calculate_impl(this->id);
 }
 ```
