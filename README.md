@@ -4,6 +4,16 @@
 ## requirements for contribution/code style
 ### C++20
 
+### tabs vs spaces
+- tab characters only ('\t')
+- why?
+	- people are very fierce about their tab widths (2, 4, 8 are most popular)
+	- tab can be interpreted as any width on basically every editor in the last 30 years
+	- no need to argue about the width when it's left up to the user
+
+### newlines
+- LF ('\n') only
+
 ### commit messages
 - they can be silly
 - keep informative if possible
@@ -12,8 +22,8 @@
 ### general naming conventions
 - macros are `SCREAMING_SNAKE` case and prefixed with `DRAGONFLY_`
 	```cpp
- 	#define DRAGONFLY_MACRO_THAT_DOES_SOMETHING()
- 	```
+	#define DRAGONFLY_MACRO_THAT_DOES_SOMETHING()
+	```
 - regular variables and arguments are `snake_case`
 - functors are to be `snake_case`
 - objects are to be `snake_case`
