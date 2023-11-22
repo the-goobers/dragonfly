@@ -6,9 +6,15 @@
 
 namespace dfly::renderer {
 	enum class type {
+		/* custom/user renderer type */
 		custom = 0,
+		/* default/none renderer type */
 		none = 0,
+		/* engine decided renderer type */
+		automatic,
+		/* opengl 3.3 renderer for most compatibility */
 		gl_compat,
+		/* opengl 4.x renderer */
 		gl_modern,
 	};
 
