@@ -7,13 +7,16 @@
 
 namespace dfly {
 	struct engine {
-		window window{};
-		renderer::renderer renderer{};
+		window* window = nullptr;
+		renderer::renderer* renderer = nullptr;
 
 		engine() = default;
 		~engine() = default;
 
 		int init();
+		int run();
+
+		static void glfw_error_callback(int err, const char* msg);
 	};
 }
 

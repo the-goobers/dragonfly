@@ -1,23 +1,21 @@
-#include "renderer.hpp"
 #include <glad/glad.h>
+#include "renderer.hpp"
 #include <GLFW/glfw3.h>
 #include <gl/GL.h>
 
 namespace dfly::renderer {
-	/* dfly::renderer::renderer */
-	void renderer::draw() {
-		
-	}
+	int gl_compat::init() {
+		if (gladLoadGL() != 0) {
+			return 1;
+		}
 
-	/* dfly::renderer::gl_compat */
-	gl_compat::gl_compat() {
-		glfwMakeContextCurrent(glfwGetCurrentContext());
-		gladLoadGL();
-		glViewport(0, 0, 800, 600);
-		glClearColor(0.0f, 0.0f, 0.0f, 1.0f);
+		this->window = window;
+
+		return 0;
 	}
 
 	void gl_compat::draw() {
-		
+		glClearColor(1, 0, 1, 1);
+		glClear(GL_COLOR_BUFFER_BIT);
 	}
 }
